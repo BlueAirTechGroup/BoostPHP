@@ -1,4 +1,7 @@
 <?php
+/* Powered by xsyds.cn(C)2017
+* Please refer to the GPLv3 copyright statement when modifying
+*/
 if(!defined("BoostPHP_Required")){
 	define("BoostPHP_Required",true);
 	
