@@ -1,13 +1,14 @@
 <?php
 /* Powered by xsyds.cn(C)2017
 * Please refer to the GPLv3 copyright statement when modifying
+* To utilize this framwork, use the code require("includes/BoostPHP.main.php")
 */
 if(!defined("BoostPHP_Required")){
 	define("BoostPHP_Required",true);
 	
 	require 'class.phpmailer.php';
 	class BoostPHP{
-		public function Word_Limit($str, $length = 0, $append = true)
+		public function wordLimit($str, $length = 0, $append = true)
 		{
 			$str = trim($str);
 			$strlength = strlen($str);
@@ -65,7 +66,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return Mysql Connection
 		 */
-		public function SendEmail($SMTPPort = 25,$SMTPHost,$SMTPUsername,$SMTPPassword,$To,$Subject,$Body,$Sender,$SenderName, $SecureConnection = false){
+		public function sendEmail($SMTPPort = 25,$SMTPHost,$SMTPUsername,$SMTPPassword,$To,$Subject,$Body,$Sender,$SenderName, $SecureConnection = false){
 			$MySD=new PHPMailer;
 			$MySD->IsSMTP();
 			$MySD->isHTML(true);
@@ -106,7 +107,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return The content of the page
 		 */
-		public function PostToAddr($url,$data,$ref,$cookie = null){ // 模拟提交数据函数
+		public function postToAddr($url,$data,$ref,$cookie = null){ // 模拟提交数据函数
 			$curl = curl_init(); // 启动一个CURL会话
 			curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
@@ -138,7 +139,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return The content of the page
 		 */
-		public function GetFromAddr($url, $ref, $cookie = null, $data = null){
+		public function getFromAddr($url, $ref, $cookie = null, $data = null){
 			$curl = curl_init(); // 启动一个CURL会话
 			curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
@@ -171,7 +172,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return Mysql Connection
 		 */
-		public function MySQLConnect($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
+		public function mySQLConnect($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
 			$MySQLiConn = mysqli_connect($Host, $Username, $Password, $Database, $Port);
 			return MySQLiConn;
 		}
@@ -186,7 +187,7 @@ if(!defined("BoostPHP_Required")){
 		 * @returnKey count[int] - how many results can be shown
 		 * @returnKey result[array] - the result of the selection(only when count > 0)
 		 */
-		public function MySQLSelectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
+		public function mySQLSelectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
 			$SelectRST = mysqli_query($MySQLiConn, $SelectStatement);
 			if(!$SelectRST){
 				return false;
@@ -214,7 +215,7 @@ if(!defined("BoostPHP_Required")){
 		 * @returnKey count[int] - how many results can be shown
 		 * @returnKey result[array] - the result of the selection(only when count > 0)
 		 */
-		public function MySQLSelectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement){
+		public function mySQLSelectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement){
 			$SelectState = "SELECT * FROM " . $Table . " WHERE ";
 			$SelectXH = 0;
 			foreach($SelectRequirement as $BLName=>$BLValue){
@@ -249,7 +250,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return int - how many results can be shown
 		 */
-		public function MySQLCheckExist($MySQLiConn,$Table,$SelectRequirement){
+		public function mySQLCheckExist($MySQLiConn,$Table,$SelectRequirement){
 			$SelectState = "SELECT * FROM " . $Table;
 			if(!empty($SelectRequirement)){
 				$SelectXH = 0;
@@ -278,7 +279,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return boolean - true if successful
 		 */
-		public function MYSQLInsertRow($MySQLiConn, $Table, $InsertArray){
+		public function mySQLInsertRow($MySQLiConn, $Table, $InsertArray){
 			if(empty($InsertArray)){
 				return false;
 			}
@@ -312,7 +313,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return boolean - if succeed, return true.
 		 */
-		public function MySQLUpdatRows($MySQLiConn, $Table, $UpdateArray, $SelectRequirement){
+		public function mySQLUpdatRows($MySQLiConn, $Table, $UpdateArray, $SelectRequirement){
 			if(empty($UpdateArray)){
 				return false;
 			}
@@ -351,7 +352,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return boolean - if succeed, return true.
 		 */
-		public function MySQLDeleteRows($MySQLiConn, $Table, $SelectRequirement){
+		public function mySQLDeleteRows($MySQLiConn, $Table, $SelectRequirement){
 			$DeleteStatement = "DELETE FROM " . $Table;
 			if(!empty($SelectRequirement)){
 				$DeleteStatement .= " WHERE ";
@@ -373,7 +374,7 @@ if(!defined("BoostPHP_Required")){
 		 * @param MySQLi Connection Data
 		 * @return Always true
 		 */
-		public function MySQLClose($MySQLiConn){
+		public function mySQLClose($MySQLiConn){
 			mysqli_close($MySQLiConn);
 			return true;
 		}
@@ -388,7 +389,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return string The content of the file
 		 */
-		public function GetFileContent($FileName,$Start=0,$Length=-1){
+		public function getFileContent($FileName,$Start=0,$Length=-1){
 			if(!file_exists($FileName)){ return false; }
 			$MyFile = fopen($FileName, "r");
 			if(!$MyFile){return false;}
@@ -411,7 +412,7 @@ if(!defined("BoostPHP_Required")){
 		* @access public
 		* @return int Number of chars written
 		*/
-		public function PutFileContent($FileName, $Content){
+		public function putFileContent($FileName, $Content){
 			$MyFile = fopen($FileName,"w");
 			if(!$MyFile){return false;}
 			$WriteStatus = fwrite($MyFile,$Content);
@@ -427,7 +428,7 @@ if(!defined("BoostPHP_Required")){
 		* @access public
 		* @return int Number of chars written
 		*/
-		public function AddFileContent($FileName,$Content){
+		public function addFileContent($FileName,$Content){
 			$MyFile = fopen($FileName,"a");
 			if(!$MyFile){return false;}
 			$WriteStatus = fwrite($MyFile,$Content);
@@ -445,7 +446,7 @@ if(!defined("BoostPHP_Required")){
 		* @access public
 		* @return boolean true when succeed
 		*/
-		public function DealUploadFile($UploadName, $PutTo, $AllowedExt = array("*"), $AllowedSize = 0){
+		public function dealUploadFile($UploadName, $PutTo, $AllowedExt = array("*"), $AllowedSize = 0){
 			if(empty($_FILES[$UploadName])){return false;}
 			$MyFile = $_FILES[$UploadName];
 			if($MyFile['error']>0){return false;}
@@ -474,7 +475,7 @@ if(!defined("BoostPHP_Required")){
 		* @access public
 		* @return string the original name
 		*/
-		public function GetUploadFileOriginalName($UploadName){
+		public function getUploadFileOriginalName($UploadName){
 			if(!empty($_FILE[$UploadName])){return $_FILE[$UploadName]['name'];}else{return false;}
 		}
 		/**
@@ -484,7 +485,7 @@ if(!defined("BoostPHP_Required")){
 		* @access public
 		* @return string the original extension
 		*/
-		public function GetUploadFileExt($UploadName){
+		public function getUploadFileOriginalExt($UploadName){
 			if(!empty($_FILE[$UploadName])){return end(explode(".",$_FILE[$UploadName]['name']));}else{return false;}
 		}
 		
