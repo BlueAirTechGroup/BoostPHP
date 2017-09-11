@@ -210,21 +210,38 @@ if(!defined("BoostPHP_Required")){
 		 * @param MySQLi Connection Data
 		 * @param string Table name,  need to be prevented from SQL Injection
 		 * @param array The array that requirements should fit, should be like array(Key=>Value, Key1=>Value1)
+		 * @param array The array of keys to be the key for ordering
 		 * @access public
 		 * @return array
 		 * @returnKey count[int] - how many results can be shown
 		 * @returnKey result[array] - the result of the selection(only when count > 0)
 		 */
-		public function mySQLSelectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement){
-			$SelectState = "SELECT * FROM " . $Table . " WHERE ";
-			$SelectXH = 0;
-			foreach($SelectRequirement as $BLName=>$BLValue){
-				if($SelectXH == 0){
-					$SelectState .= mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn,$BLValue) . "'";
-				}else{
-					$SelectState .= " AND " . mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn,$BLValue) . "'";
+		public function mySQLSelectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array()){
+			$SelectState = "SELECT * FROM " . $Table;
+			
+			if(!empty($SelectRequirement)){
+				$SelectXH = 0;
+				$SelectState .= " WHERE ";
+				foreach($SelectRequirement as $BLName=>$BLValue){
+					if($SelectXH == 0){
+						$SelectState .= mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn,$BLValue) . "'";
+					}else{
+						$SelectState .= " AND " . mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn,$BLValue) . "'";
+					}
+					$SelectXH++;
 				}
-				$SelectXH++;
+			}
+			if(!empty($OrderByArray)){
+				$SelectXH = 0;
+				$SelectState .= " ORDER BY ";
+				foreach($OrderByArray as $BLName){
+					if($SelectXH == 0){
+						$SelectState .= mysqli_real_escape_string($MySQLiConn, $BLName);
+					}else{
+						$SelectState .= ", " . mysqli_real_escape_string($MySQLiConn, $BLName);
+					}
+					$SelectXH++;
+				}
 			}
 			$MRST=mysqli_query($MySQLiConn,$SelectState);
 			if(!$MRST){
