@@ -1,12 +1,13 @@
 <?php
 /* Powered by xsyds.cn(C)2017
 * Please refer to the GPLv3 copyright statement when modifying
-* To utilize this framwork, use the code require("includes/BoostPHP.main.php")
+* To utilize this framwork, require this file
 */
 if(!defined("BoostPHP_Required")){
 	define("BoostPHP_Required",true);
 	
 	require 'class.phpmailer.php';
+	require 'BoostPHP.AES.php';
 	class BoostPHP{
 		public function wordLimit($str, $length = 0, $append = true)
 		{
@@ -161,6 +162,7 @@ if(!defined("BoostPHP_Required")){
 		}
 	}
 	class BoostPHP_MySQLClass{
+		
 		/**
 		 * Connect to a database using mysqli
 		 * returns false on failure
@@ -172,7 +174,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return Mysql Connection
 		 */
-		public function mySQLConnect($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
+		public function connectDB($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
 			$MySQLiConn = mysqli_connect($Host, $Username, $Password, $Database, $Port);
 			return MySQLiConn;
 		}
@@ -187,7 +189,7 @@ if(!defined("BoostPHP_Required")){
 		 * @returnKey count[int] - how many results can be shown
 		 * @returnKey result[array] - the result of the selection(only when count > 0)
 		 */
-		public function mySQLSelectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
+		public function selectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
 			$SelectRST = mysqli_query($MySQLiConn, $SelectStatement);
 			if(!$SelectRST){
 				return false;
@@ -216,7 +218,7 @@ if(!defined("BoostPHP_Required")){
 		 * @returnKey count[int] - how many results can be shown
 		 * @returnKey result[array] - the result of the selection(only when count > 0)
 		 */
-		public function mySQLSelectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array()){
+		public function selectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array()){
 			$SelectState = "SELECT * FROM " . $Table;
 			
 			if(!empty($SelectRequirement)){
@@ -267,7 +269,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return int - how many results can be shown
 		 */
-		public function mySQLCheckExist($MySQLiConn,$Table,$SelectRequirement){
+		public function checkExist($MySQLiConn,$Table,$SelectRequirement){
 			$SelectState = "SELECT * FROM " . $Table;
 			if(!empty($SelectRequirement)){
 				$SelectXH = 0;
@@ -296,7 +298,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return boolean - true if successful
 		 */
-		public function mySQLInsertRow($MySQLiConn, $Table, $InsertArray){
+		public function insertRow($MySQLiConn, $Table, $InsertArray){
 			if(empty($InsertArray)){
 				return false;
 			}
@@ -330,7 +332,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return boolean - if succeed, return true.
 		 */
-		public function mySQLUpdatRows($MySQLiConn, $Table, $UpdateArray, $SelectRequirement){
+		public function updateRows($MySQLiConn, $Table, $UpdateArray, $SelectRequirement){
 			if(empty($UpdateArray)){
 				return false;
 			}
@@ -369,7 +371,7 @@ if(!defined("BoostPHP_Required")){
 		 * @access public
 		 * @return boolean - if succeed, return true.
 		 */
-		public function mySQLDeleteRows($MySQLiConn, $Table, $SelectRequirement){
+		public function deleteRows($MySQLiConn, $Table, $SelectRequirement){
 			$DeleteStatement = "DELETE FROM " . $Table;
 			if(!empty($SelectRequirement)){
 				$DeleteStatement .= " WHERE ";
@@ -391,7 +393,7 @@ if(!defined("BoostPHP_Required")){
 		 * @param MySQLi Connection Data
 		 * @return Always true
 		 */
-		public function mySQLClose($MySQLiConn){
+		public function closeConn($MySQLiConn){
 			mysqli_close($MySQLiConn);
 			return true;
 		}
@@ -504,6 +506,45 @@ if(!defined("BoostPHP_Required")){
 		*/
 		public function getUploadFileOriginalExt($UploadName){
 			if(!empty($_FILE[$UploadName])){return end(explode(".",$_FILE[$UploadName]['name']));}else{return false;}
+		}
+		
+	}
+	class BoostPHP_SecureClass_SHA{
+		
+		/**
+		* Encode the string using SHA256 Encoding Method(With Salt)
+		* @param string $Text String to be encode with
+		* @param string $Salt Optional, The Salt to be add together
+		* @access public
+		* @return string The encoded string
+		*/
+		public function SHA256Encode($Text,$Salt = ""){
+			if(!empty($Salt)){$Salt=md5($Salt);}
+			return hash("sha256",$Text . $Salt);
+		}
+		
+		/**
+		* Encode the string using SHA512 Encoding Method(With Salt)
+		* @param string $Text String to be encode with
+		* @param string $Salt Optional, The Salt to be add together
+		* @access public
+		* @return string The encoded string
+		*/
+		public function SHA512Encode($Text, $Salt = ""){
+			if(!empty($Salt)){$Salt=md5($Salt);}
+			return hash("sha512",$Text . $Salt);
+		}
+		
+		/**
+		* Encode the string using SHA1 Encoding Method(With Salt)
+		* @param string $Text String to be encode with
+		* @param string $Salt Optional, The Salt to be add together
+		* @access public
+		* @return string The encoded string
+		*/
+		public function SHA1Encode($Text, $Salt = ""){
+			if(!empty($Salt)){$Salt=md5($Salt);}
+			return hash("sha1",$Text . $Salt);
 		}
 		
 	}
