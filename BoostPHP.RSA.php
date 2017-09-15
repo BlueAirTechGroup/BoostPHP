@@ -1,4 +1,9 @@
 <?php
+/* Powered by xsyds.cn(C)2017
+* Please refer to the GPLv3 copyright statement when modifying
+* To utilize this framwork, require this file
+* This class supports your own certificate, you can generate 4096 bits certificate on your own!
+*/
 class BoostPHP_SecureClass_RSA
 {
     public $privateKey = '';

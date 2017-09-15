@@ -547,7 +547,6 @@ if(!defined("BoostPHP_Required")){
 			if(!empty($Salt)){$Salt=md5($Salt);}
 			return hash("sha1",$Text . $Salt);
 		}
-		
 	}
 }
 ?>
