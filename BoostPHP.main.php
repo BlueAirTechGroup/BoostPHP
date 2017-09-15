@@ -8,6 +8,7 @@ if(!defined("BoostPHP_Required")){
 	
 	require 'class.phpmailer.php';
 	require 'BoostPHP.AES.php';
+	require 'BoostPHP.RSA.php';
 	class BoostPHP{
 		public function wordLimit($str, $length = 0, $append = true)
 		{
