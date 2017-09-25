@@ -6,10 +6,12 @@
 if(!defined("BoostPHP_Required")){
 	define("BoostPHP_Required",true);
 	
+	require 'BoostPHP.Alg.php';
 	require 'class.phpmailer.php';
 	require 'BoostPHP.AES.php';
 	require 'BoostPHP.RSA.php';
-	class BoostPHP{
+	
+	class BoostPHP_StringClass{
 		public function wordLimit($str, $length = 0, $append = true)
 		{
 			$str = trim($str);
