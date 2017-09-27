@@ -1,6 +1,6 @@
 <?php
 /* Powered by xsyds.cn(C)2017
-* Please refer to the GPLv3 copyright statement when modifying
+* Please refer to the MIT copyright statement when modifying
 * To utilize this framwork, require this file
 */
 if(!defined("BoostPHP_Required")){
