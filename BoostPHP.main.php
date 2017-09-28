@@ -10,6 +10,21 @@ if(!defined("BoostPHP_Required")){
 	require 'class.phpmailer.php';
 	require 'BoostPHP.AES.php';
 	require 'BoostPHP.RSA.php';
+	require 'BoostPHP.International.php';
+	class BoostPHP_ResultClass{
+		/**
+		 * Jump to a page using header writing, JavaScript and HTML tags, and ALSO Exit the PHP program right away.
+		 * @param string $URL the URL you want to jump to
+		 * @access public
+		 * @return void
+		 */
+		public function jumpToPage($URL){
+			header("Location: " . $URL);
+			echo '<script>document.location="' . $URL . '";window.location="' . $URL . '";</script>';
+			echo '<noscript><meta http-equiv="refresh" content="0;URL=\'' . $URL . '\'" /></nocript>';
+			exit(0);
+		}
+	}
 	
 	class BoostPHP_StringClass{
 		public function wordLimit($str, $length = 0, $append = true)

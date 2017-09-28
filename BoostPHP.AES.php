@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 /**
 * AES Encryption and Decryption Class
