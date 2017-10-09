@@ -37,9 +37,9 @@ class BoostPHP_AlgorithmClass{
 		for($i=1; $i<count($array); $i++){
 			if($array[$i][$field] > $base){
 				$rightArray[] = $array[$i];
-		    }else if($array[$i][$field]==$base){
+		    }else if($array[$i][$field] == $base){
 			    $midArray[] = $array[$i];
-			}else{ // <= base
+			}else{ // < base
 				$leftArray[] = $array[$i];
 			}
 		}
@@ -48,7 +48,7 @@ class BoostPHP_AlgorithmClass{
 		//$leftArray[] = $base;
 		
 		$rightArray = $this->quickSortArrays_ByField($rightArray,$field);
-		return array_merge($leftArray, array($base), $midArray, $rightArray);
+		return array_merge($leftArray, array($array[0]), $midArray, $rightArray);
 	}
 }
 ?>
