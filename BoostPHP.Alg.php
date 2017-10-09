@@ -32,21 +32,23 @@ class BoostPHP_AlgorithmClass{
 		$base = $array[0][$field];
 		$leftArray = array();
 		$rightArray = array();
-		
+		$midArray = array();
 		// 修改部分------------------------
 		for($i=1; $i<count($array); $i++){
-			if($array[$i][$field] > $base)
+			if($array[$i][$field] > $base){
 				$rightArray[] = $array[$i];
-			else // <= base
+		    }else if($array[$i][$field]==$base){
+			    $midArray[] = $array[$i];
+			}else{ // <= base
 				$leftArray[] = $array[$i];
+			}
 		}
 		//------------------------------------
-		
-		$leftArray = quickSort($leftArray,$field);
+		$leftArray = $this->quickSortArrays_ByField($leftArray,$field);
 		//$leftArray[] = $base;
 		
-		$rightArray = quickSort($rightArray,$field);
-		return array_merge($leftArray, array($base), $rightArray);
+		$rightArray = $this->quickSortArrays_ByField($rightArray,$field);
+		return array_merge($leftArray, array($base), $midArray, $rightArray);
 	}
 }
 ?>
