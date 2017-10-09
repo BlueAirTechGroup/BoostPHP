@@ -44,21 +44,10 @@ class BoostPHP_StringClass{
 			}
 		}
 	 
-		if (function_exists('mb_substr'))
-		{
-			$newstr = mb_substr($str, 0, $length, EC_CHARSET);
-		}
-		elseif (function_exists('iconv_substr'))
-		{
-			$newstr = iconv_substr($str, 0, $length, EC_CHARSET);
-		}
-		else
-		{
 			//$newstr = trim_right(substr($str, 0, $length));
-			$newstr = substr($str, 0, $length);
-		}
+		$newstr = substr($str, 0, $length);
 	 
-		if ($append && $str != $newstr)
+		if ($append && ($str != $newstr))
 		{
 			$newstr .= '...';
 		}
@@ -179,7 +168,6 @@ class BoostPHP_NetworkClass{
 	}
 }
 class BoostPHP_MySQLClass{
-	
 	/**
 	 * Connect to a database using mysqli
 	 * returns false on failure
@@ -193,7 +181,7 @@ class BoostPHP_MySQLClass{
 	 */
 	public function connectDB($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
 		$MySQLiConn = mysqli_connect($Host, $Username, $Password, $Database, $Port);
-		return MySQLiConn;
+		return $MySQLiConn;
 	}
 	
 	/**
@@ -208,6 +196,7 @@ class BoostPHP_MySQLClass{
 	 */
 	public function selectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
 		$SelectRST = mysqli_query($MySQLiConn, $SelectStatement);
+		
 		if(!$SelectRST){
 			return false;
 		}
@@ -220,6 +209,7 @@ class BoostPHP_MySQLClass{
 				$ResultArr['result'][$xh] = $SelectTempArr;
 			}
 		}
+		mysqli_free_result($SelectRST);
 		return $ResultArr;
 	}
 	
@@ -275,6 +265,7 @@ class BoostPHP_MySQLClass{
 				$ResultArr['result'][$xh] = $SelectTempArr;
 			}
 		}
+		mysqli_free($MRST);
 		return $ResultArr;
 	}
 	/**
@@ -304,6 +295,7 @@ class BoostPHP_MySQLClass{
 		if(!$MRST){
 			return false;
 		}
+		mysqli_free_result($MRST);
 		return mysqli_num_rows($MRST);
 	}
 	/**
