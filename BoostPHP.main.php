@@ -221,12 +221,14 @@ class BoostPHP_MySQLClass{
 	 * @param string Table name,  need to be prevented from SQL Injection
 	 * @param array The array that requirements should fit, should be like array(Key=>Value, Key1=>Value1)
 	 * @param array The array of keys to be the key for ordering
+	 * @param int The limit number you want to select, -1 means to select all
+	 * @param int the offset you want to start with, by default it is 0, which means from the start.
 	 * @access public
 	 * @return array
 	 * @returnKey count[int] - how many results can be shown
 	 * @returnKey result[array] - the result of the selection(only when count > 0)
 	 */
-	public function selectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array()){
+	public function selectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array(), $NumLimit = -1, $OffsetNum = 0){
 	    $SelectState = "SELECT * FROM " . $Table;
 		
 		if(!empty($SelectRequirement)){
@@ -252,6 +254,12 @@ class BoostPHP_MySQLClass{
 				}
 				$SelectXH++;
 			}
+		}
+		if($NumLimit != -1){
+		    $SelectState .= " LIMIT " . $NumLimit;
+		}
+		if($OffsetNum > 0){
+		    $SelectState .= " OFFSET " . $OffsetNum;
 		}
 		$MRST=mysqli_query($MySQLiConn,$SelectState);
 		if(!$MRST){
