@@ -202,11 +202,12 @@ class BoostPHP_MySQLClass{
 		}
 		$Selectcount = mysqli_num_rows($SelectRST);
 		$ResultArr['count'] = $Selectcount;
+		$ResultArr['result'] = array();
 		$SelectTempArr = array();
 		if($Selectcount>0){
 			for($xh = 0; $xh < $Selectcount; $xh++){
 				$SelectTempArr = mysqli_fetch_array($SelectRST);
-				$ResultArr['result'][$xh] = $SelectTempArr;
+				$ResultArr['result'][] = $SelectTempArr;
 			}
 		}
 		mysqli_free_result($SelectRST);
@@ -226,7 +227,7 @@ class BoostPHP_MySQLClass{
 	 * @returnKey result[array] - the result of the selection(only when count > 0)
 	 */
 	public function selectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array()){
-		$SelectState = "SELECT * FROM " . $Table;
+	    $SelectState = "SELECT * FROM " . $Table;
 		
 		if(!empty($SelectRequirement)){
 			$SelectXH = 0;
@@ -258,14 +259,15 @@ class BoostPHP_MySQLClass{
 		}
 		$Selectcount = mysqli_num_rows($MRST);
 		$ResultArr['count'] = $Selectcount;
+		$ResultArr['result'] = array();
 		$SelectTempArr = array();
 		if($Selectcount>0){
 			for($xh = 0; $xh < $Selectcount; $xh++){
 				$SelectTempArr = mysqli_fetch_array($MRST);
-				$ResultArr['result'][$xh] = $SelectTempArr;
+				$ResultArr['result'][] = $SelectTempArr;
 			}
 		}
-		mysqli_free($MRST);
+		mysqli_free_result($MRST);
 		return $ResultArr;
 	}
 	/**
