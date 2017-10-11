@@ -295,8 +295,9 @@ class BoostPHP_MySQLClass{
 		if(!$MRST){
 			return false;
 		}
+		$MyRSTNum = mysqli_num_rows($MRST);
 		mysqli_free_result($MRST);
-		return mysqli_num_rows($MRST);
+		return $MyRSTNum;
 	}
 	/**
 	 * Insert data into the DB
