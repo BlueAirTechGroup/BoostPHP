@@ -112,7 +112,7 @@ class BoostPHP_NetworkClass{
 	 * @param string Reference(Which website were you previously?)
 	 * @param array Cookies to POST with
 	 * @access public
-	 * @return The content of the page
+	 * @return array {'code'=>HTTPStat, 'content'=>Content}
 	 */
 	public function postToAddr($url,$data,$ref,$cookie = null){ // 模拟提交数据函数
 		$curl = curl_init(); // 启动一个CURL会话
@@ -133,8 +133,10 @@ class BoostPHP_NetworkClass{
 		if (curl_errno($curl)) {
 		   return false;//捕抓异常
 		}
+		$tmpRst['code'] = curl_getinfo($curl,CURLINFO_HTTP_CODE); //我知道HTTPSTAT码哦～
+		$tmpRst['content'] = $tmpInfo;
 		curl_close($curl); // 关闭CURL会话
-		return $tmpInfo; // 返回数据
+		return $tmpRst; // 返回数据
 	}
 	/**
 	 * Send a Get Request
@@ -144,7 +146,7 @@ class BoostPHP_NetworkClass{
 	 * @param array The cookies you want to set
 	 * @param array Datas(Params) you want to put in the address
 	 * @access public
-	 * @return The content of the page
+	 * @return array {'code'=>HTTP_Stat, 'content'=>Content}
 	 */
 	public function getFromAddr($url, $ref, $cookie = null, $data = null){
 		$curl = curl_init(); // 启动一个CURL会话
@@ -163,8 +165,10 @@ class BoostPHP_NetworkClass{
 		if (curl_errno($curl)) {
 		   return false;//捕抓异常
 		}
+		$tmpRst['code'] = curl_getinfo($curl,CURLINFO_HTTP_CODE); //获取HTTP状态嘛
+		$tmpRst['content'] = $tmpInfo;
 		curl_close($curl); // 关闭CURL会话
-		return $tmpInfo; // 返回数据
+		return $tmpRst; // 返回数据
 	}
 }
 class BoostPHP_MySQLClass{
