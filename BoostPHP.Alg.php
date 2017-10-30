@@ -12,10 +12,11 @@ $BoostPHP_CompareField ='field';
  * @return number
  */
 function quickSortArrays_CompareFunc(&$a,&$b){
-    if($a[$CompareField] == $b[$CompareField]){
+    global $BoostPHP_CompareField;
+    if($a[$BoostPHP_CompareField] == $b[$BoostPHP_CompareField]){
         return 0;
     }
-    return ($a[$CompareField] < $b[$CompareField]) ? -1 : 1;
+    return ($a[$BoostPHP_CompareField] < $b[$BoostPHP_CompareField]) ? -1 : 1;
 }
 class BoostPHP_AlgorithmClass{
 	/**
@@ -40,6 +41,7 @@ class BoostPHP_AlgorithmClass{
 	 * @return array the array after sorting
 	 */
 	public function quickSortArrays_ByField($array,$field){
+	    global $BoostPHP_CompareField;
 	    $BoostPHP_CompareField = $field;
 	    $newArray = $array;
 	    usort($newArray, "quickSortArrays_CompareFunc");
