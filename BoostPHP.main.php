@@ -23,6 +23,44 @@ class BoostPHP_ResultClass{
 		echo '<noscript><meta http-equiv="refresh" content="0;URL=\'' . $URL . '\'" /></nocript>';
 		exit(0);
 	}
+	/**
+	 * Cache a page result, start to cache
+	 * @param int $cacheAvailableTime Time until new cache is generated
+	 * @param bool $useAutoGenerate set this to true if you want the system to auto generate filename for you.
+	 * @param string $cacheFileName cached Filename(if useAutoGenerate is on, it should be the basedir, which looks like dir/)
+	 * @access public
+	 * @return bool needed to cache
+	 */
+	public function cacheStart($cacheAvailableTime, $useAutoGenerate ,$cacheFileName = ''){
+		ob_start();
+		if($useAutoGenerate){
+			$cacheFileName .= sha1($_SERVER['REQUEST_URI']) . sha1(file_get_contents("php://input")) . '.html';
+		}
+		if(file_exists($cacheFileName) && (time()-filemtime($cacheFileName)) < $cacheAvailableTime){
+			include $cacheFileName;
+			return false;
+		}
+		return true;
+	}
+	/**
+	 * Stop caching a page result and put the caching content into a file
+	 * @param bool $useAutoGenerate set this to true if you want the system to auto generate filename for you.
+	 * @param string $cacheFileName cached Filename(if useAutoGenerate is on, it should be the basedir, which looks like dir/)
+	 * @param bool $isStoring is storing the content of the cache content
+	 * @access public
+	 * @return void
+	 */
+	public function cacheEnd($useAutoGenerate, $cacheFileName = '', $isStoring=true){
+		if($useAutoGenerate){
+			$cacheFileName .= sha1($_SERVER['REQUEST_URI']) . sha1(file_get_contents("php://input")) . '.html';
+		}
+		if($isStoring){
+			$fp = fopen($cacheFileName,'w');
+			fwrite($fp,ob_get_contents());
+			fclose($fp);
+		}
+		ob_end_flush();
+	}
 }
 
 class BoostPHP_StringClass{
