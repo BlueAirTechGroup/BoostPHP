@@ -245,12 +245,17 @@ class BoostPHP_MySQLClass{
 		$Selectcount = mysqli_num_rows($SelectRST);
 		$ResultArr['count'] = $Selectcount;
 		$ResultArr['result'] = array();
+		/* Old(PHP<5.3)
 		$SelectTempArr = array();
 		if($Selectcount>0){
 			for($xh = 0; $xh < $Selectcount; $xh++){
 				$SelectTempArr = mysqli_fetch_array($SelectRST);
 				$ResultArr['result'][] = $SelectTempArr;
 			}
+		}
+		*/
+		if($Selectcount>0){
+		    $ResultArr['result'] = mysqli_fetch_all($SelectRST,MYSQLI_ASSOC);
 		}
 		mysqli_free_result($SelectRST);
 		return $ResultArr;
@@ -310,12 +315,17 @@ class BoostPHP_MySQLClass{
 		$Selectcount = mysqli_num_rows($MRST);
 		$ResultArr['count'] = $Selectcount;
 		$ResultArr['result'] = array();
+		/* Old (<PHP 5.3)
 		$SelectTempArr = array();
 		if($Selectcount>0){
 			for($xh = 0; $xh < $Selectcount; $xh++){
 				$SelectTempArr = mysqli_fetch_array($MRST);
 				$ResultArr['result'][] = $SelectTempArr;
 			}
+		}
+		*/
+		if($Selectcount>0){
+		    $ResultArr['result'] = mysqli_fetch_all($MRST,MYSQLI_ASSOC);
 		}
 		mysqli_free_result($MRST);
 		return $ResultArr;
