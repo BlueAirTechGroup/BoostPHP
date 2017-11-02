@@ -330,7 +330,7 @@ class BoostPHP_MySQLClass{
 	 * @return int - how many results can be shown
 	 */
 	public function checkExist($MySQLiConn,$Table,$SelectRequirement){
-		$SelectState = "SELECT * FROM " . $Table;
+		$SelectState = "SELECT COUNT(*) FROM " . $Table;
 		if(!empty($SelectRequirement)){
 			$SelectXH = 0;
 			$SelectState .= " WHERE ";
@@ -347,7 +347,8 @@ class BoostPHP_MySQLClass{
 		if(!$MRST){
 			return false;
 		}
-		$MyRSTNum = mysqli_num_rows($MRST);
+		$MyArr = mysqli_fetch_array($MRST);
+		$MyRSTNum = $MyArr['COUNT(*)'];
 		mysqli_free_result($MRST);
 		return $MyRSTNum;
 	}
