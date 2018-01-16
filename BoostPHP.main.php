@@ -17,7 +17,7 @@ class BoostPHP_ResultClass{
 	 * @access public
 	 * @return void
 	 */
-	public function jumpToPage($URL){
+	public static function jumpToPage($URL){
 		header("Location: " . $URL);
 		echo '<script>document.location="' . $URL . '";window.location="' . $URL . '";</script>';
 		echo '<noscript><meta http-equiv="refresh" content="0;URL=\'' . $URL . '\'" /></nocript>';
@@ -31,7 +31,7 @@ class BoostPHP_ResultClass{
 	 * @access public
 	 * @return bool needed to cache
 	 */
-	public function cacheStart($cacheAvailableTime, $useAutoGenerate ,$cacheFileName = ''){
+	public static function cacheStart($cacheAvailableTime, $useAutoGenerate ,$cacheFileName = ''){
 		ob_start();
 		if($useAutoGenerate){
 			$cacheFileName .= sha1($_SERVER['REQUEST_URI']) . sha1(file_get_contents("php://input")) . '.html';
@@ -50,7 +50,7 @@ class BoostPHP_ResultClass{
 	 * @access public
 	 * @return void
 	 */
-	public function cacheEnd($useAutoGenerate, $cacheFileName = '', $isStoring=true){
+	public static function cacheEnd($useAutoGenerate, $cacheFileName = '', $isStoring=true){
 		if($useAutoGenerate){
 			$cacheFileName .= sha1($_SERVER['REQUEST_URI']) . sha1(file_get_contents("php://input")) . '.html';
 		}
@@ -64,7 +64,7 @@ class BoostPHP_ResultClass{
 }
 
 class BoostPHP_StringClass{
-	public function wordLimit($str, $length = 0, $append = true)
+	public static function wordLimit($str, $length = 0, $append = true)
 	{
 		$str = trim($str);
 		$strlength = strlen($str);
@@ -111,7 +111,7 @@ class BoostPHP_NetworkClass{
 	 * @access public
 	 * @return Mysql Connection
 	 */
-	public function sendEmail($SMTPPort = 25,$SMTPHost,$SMTPUsername,$SMTPPassword,$To,$Subject,$Body,$Sender,$SenderName, $SecureConnection = false){
+	public static function sendEmail($SMTPPort = 25,$SMTPHost,$SMTPUsername,$SMTPPassword,$To,$Subject,$Body,$Sender,$SenderName, $SecureConnection = false){
 		$MySD=new PHPMailer;
 		$MySD->IsSMTP();
 		$MySD->isHTML(true);
@@ -152,7 +152,7 @@ class BoostPHP_NetworkClass{
 	 * @access public
 	 * @return array {'code'=>HTTPStat, 'content'=>Content}
 	 */
-	public function postToAddr($url,$data,$ref,$cookie = null){ // 模拟提交数据函数
+	public static function postToAddr($url,$data,$ref,$cookie = null){ // 模拟提交数据函数
 		$curl = curl_init(); // 启动一个CURL会话
 		curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
@@ -186,7 +186,7 @@ class BoostPHP_NetworkClass{
 	 * @access public
 	 * @return array {'code'=>HTTP_Stat, 'content'=>Content}
 	 */
-	public function getFromAddr($url, $ref, $cookie = null, $data = null){
+	public static function getFromAddr($url, $ref, $cookie = null, $data = null){
 		$curl = curl_init(); // 启动一个CURL会话
 		curl_setopt($curl, CURLOPT_URL, $url); // 要访问的地址
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0); // 对认证证书来源的检查
@@ -221,7 +221,7 @@ class BoostPHP_MySQLClass{
 	 * @access public
 	 * @return Mysql Connection
 	 */
-	public function connectDB($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
+	public static function connectDB($Username, $Password, $Database, $Host = "127.0.0.1", $Port = 3306){
 		$MySQLiConn = mysqli_connect($Host, $Username, $Password, $Database, $Port);
 		return $MySQLiConn;
 	}
@@ -236,7 +236,7 @@ class BoostPHP_MySQLClass{
 	 * @returnKey count[int] - how many results can be shown
 	 * @returnKey result[array] - the result of the selection(only when count > 0)
 	 */
-	public function selectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
+	public static function selectIntoArray_FromStatement($MySQLiConn, $SelectStatement){
 		$SelectRST = mysqli_query($MySQLiConn, $SelectStatement);
 		
 		if(!$SelectRST){
@@ -275,7 +275,7 @@ class BoostPHP_MySQLClass{
 	 * @returnKey count[int] - how many results can be shown
 	 * @returnKey result[array] - the result of the selection(only when count > 0)
 	 */
-	public function selectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array(), $NumLimit = -1, $OffsetNum = 0){
+	public static function selectIntoArray_FromRequirements($MySQLiConn, $Table, $SelectRequirement = array(), $OrderByArray = array(), $NumLimit = -1, $OffsetNum = 0){
 	    $SelectState = "SELECT * FROM " . $Table;
 		
 		if(!empty($SelectRequirement)){
@@ -339,7 +339,7 @@ class BoostPHP_MySQLClass{
 	 * @access public
 	 * @return int - how many results can be shown
 	 */
-	public function checkExist($MySQLiConn,$Table,$SelectRequirement){
+	public static function checkExist($MySQLiConn,$Table,$SelectRequirement){
 		$SelectState = "SELECT COUNT(*) FROM " . $Table;
 		if(!empty($SelectRequirement)){
 			$SelectXH = 0;
@@ -371,7 +371,7 @@ class BoostPHP_MySQLClass{
 	 * @access public
 	 * @return boolean - true if successful
 	 */
-	public function insertRow($MySQLiConn, $Table, $InsertArray){
+	public static function insertRow($MySQLiConn, $Table, $InsertArray){
 		if(empty($InsertArray)){
 			return false;
 		}
@@ -405,7 +405,7 @@ class BoostPHP_MySQLClass{
 	 * @access public
 	 * @return boolean - if succeed, return true.
 	 */
-	public function updateRows($MySQLiConn, $Table, $UpdateArray, $SelectRequirement){
+	public static function updateRows($MySQLiConn, $Table, $UpdateArray, $SelectRequirement){
 		if(empty($UpdateArray)){
 			return false;
 		}
@@ -444,7 +444,7 @@ class BoostPHP_MySQLClass{
 	 * @access public
 	 * @return boolean - if succeed, return true.
 	 */
-	public function deleteRows($MySQLiConn, $Table, $SelectRequirement){
+	public static function deleteRows($MySQLiConn, $Table, $SelectRequirement){
 		$DeleteStatement = "DELETE FROM " . $Table;
 		if(!empty($SelectRequirement)){
 			$DeleteStatement .= " WHERE ";
@@ -481,7 +481,7 @@ class BoostPHP_FileClass{
 	 * @access public
 	 * @return string The content of the file
 	 */
-	public function getFileContent($FileName,$Start=0,$Length=-1){
+	public static function getFileContent($FileName,$Start=0,$Length=-1){
 		if(!file_exists($FileName)){ return false; }
 		$MyFile = fopen($FileName, "r");
 		if(!$MyFile){return false;}
@@ -504,7 +504,7 @@ class BoostPHP_FileClass{
 	* @access public
 	* @return int Number of chars written
 	*/
-	public function putFileContent($FileName, $Content){
+	public static function putFileContent($FileName, $Content){
 		$MyFile = fopen($FileName,"w");
 		if(!$MyFile){return false;}
 		$WriteStatus = fwrite($MyFile,$Content);
@@ -538,7 +538,7 @@ class BoostPHP_FileClass{
 	* @access public
 	* @return boolean true when succeed
 	*/
-	public function dealUploadFile($UploadName, $PutTo, $AllowedExt = array("*"), $AllowedSize = 0){
+	public static function dealUploadFile($UploadName, $PutTo, $AllowedExt = array("*"), $AllowedSize = 0){
 		if(empty($_FILES[$UploadName])){return false;}
 		$MyFile = $_FILES[$UploadName];
 		if($MyFile['error']>0){return false;}
@@ -567,7 +567,7 @@ class BoostPHP_FileClass{
 	* @access public
 	* @return string the original name
 	*/
-	public function getUploadFileOriginalName($UploadName){
+	public static function getUploadFileOriginalName($UploadName){
 		if(!empty($_FILE[$UploadName])){return $_FILE[$UploadName]['name'];}else{return false;}
 	}
 	/**
@@ -577,7 +577,7 @@ class BoostPHP_FileClass{
 	* @access public
 	* @return string the original extension
 	*/
-	public function getUploadFileOriginalExt($UploadName){
+	public static function getUploadFileOriginalExt($UploadName){
 		if(!empty($_FILE[$UploadName])){return end(explode(".",$_FILE[$UploadName]['name']));}else{return false;}
 	}
 	
@@ -591,7 +591,7 @@ class BoostPHP_SecureClass_SHA{
 	* @access public
 	* @return string The encoded string
 	*/
-	public function SHA256Encode($Text,$Salt = ""){
+	public static function SHA256Encode($Text,$Salt = ""){
 		if(!empty($Salt)){$Salt=md5($Salt);}
 		return hash("sha256",$Text . $Salt);
 	}
@@ -603,7 +603,7 @@ class BoostPHP_SecureClass_SHA{
 	* @access public
 	* @return string The encoded string
 	*/
-	public function SHA512Encode($Text, $Salt = ""){
+	public static function SHA512Encode($Text, $Salt = ""){
 		if(!empty($Salt)){$Salt=md5($Salt);}
 		return hash("sha512",$Text . $Salt);
 	}
@@ -615,7 +615,7 @@ class BoostPHP_SecureClass_SHA{
 	* @access public
 	* @return string The encoded string
 	*/
-	public function SHA1Encode($Text, $Salt = ""){
+	public static function SHA1Encode($Text, $Salt = ""){
 		if(!empty($Salt)){$Salt=md5($Salt);}
 		return hash("sha1",$Text . $Salt);
 	}

@@ -25,7 +25,7 @@ class BoostPHP_AlgorithmClass{
 	* @param array $array array to be sorted
 	* @return array the array after sorting
 	*/
-	public function quickSort_Native($array){
+	public static function quickSort_Native($array){
 	    $NewArr = $array;
 		sort($NewArr);
 		return $NewArr;
@@ -40,7 +40,7 @@ class BoostPHP_AlgorithmClass{
 	 * @param array $array array to be sorted
 	 * @return array the array after sorting
 	 */
-	public function quickSortArrays_ByField($array,$field){
+	public static function quickSortArrays_ByField($array,$field){
 	    global $BoostPHP_CompareField;
 	    $BoostPHP_CompareField = $field;
 	    $newArray = $array;

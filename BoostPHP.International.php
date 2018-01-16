@@ -17,7 +17,7 @@ class BoostPHP_InternationalClass{
 	 * @access public
 	 * @return array - Supported Languages
 	 */
-	public function getSupportedLanguage($toLower=true){
+	public static function getSupportedLanguage($toLower=true){
 		$acceptLangHeader = $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 		//正常格式: Accept-Language: zh-cn,zh;q=0.5, PHP会自动去掉Accept-Language: 头, q是权重的意思, 就是多希望用最前面的语言, 若Q为0则说明不支持的语言
 		//这里不读取Q, 发送0的太少了
@@ -43,7 +43,7 @@ class BoostPHP_InternationalClass{
 	 * @access public
 	 * @return string - the URL you want to forward your client to
 	 */
-	public function matchSupportedLanguage($SupportedLanguage, $WebsiteLanguageList, $DefaultURL){
+	public static function matchSupportedLanguage($SupportedLanguage, $WebsiteLanguageList, $DefaultURL){
 		foreach($SupportedLanguage as $mSupportLang){
 			foreach($WebsiteLanguageList as $mWebsiteLang=>$mWebsiteURL){
 				if(strtolower($mSupportLang) == strtolower($mWebsiteLang)){

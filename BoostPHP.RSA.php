@@ -3,24 +3,32 @@
 * RSA Encryption and Decryption Class
 * Author: Windy(www.xsyds.cn)
 */
+class BoostPHP_SecureClass_RSAKey{
+	public $privateKey = "";
+	public $publicKey = "";
+}
 class BoostPHP_SecureClass_RSA
 {
-    public $privateKey = '';
-
-    public $publicKey = '';
     
 	/**
 	* Generate new RSA Private and Public Key for single communication
+	* @param int Bits for the key
 	* @access public
-	* @return void
+	* @return BoostPHP_SecureClass_RSAKey KeyPair of RSA
 	* You can access the key by the variable $privateKey and $publicKey
 	*/
-    public function generateNewKeys()
+    public static function generateNewKeys($keybit = 1024)
     {
-        $resource = openssl_pkey_new();
-        openssl_pkey_export($resource, $this->privateKey);
+		$Conf = array(
+				"digest_alg" => "sha512",
+				"private_key_bits" => $keybit,
+				"private_key_type" => OPENSSL_KEYTYPE_RSA);
+        $resource = openssl_pkey_new($Conf);
+		$MKey = new BoostPHP_SecureClass_RSAKey();
+        openssl_pkey_export($resource, $MKey->privateKey);
         $detail = openssl_pkey_get_details($resource);
-        $this->publicKey = $detail['key'];
+        $MKey->publicKey = $detail['key'];
+		return $MKey
     }
 	
 	/**
@@ -30,7 +38,7 @@ class BoostPHP_SecureClass_RSA
 	* @access public
 	* @return string Encrypted Data
 	*/
-    public function publicEncrypt($data, $publicKey)
+    public static function publicEncrypt($data, $publicKey)
     {
         openssl_public_encrypt($data, $encrypted, $publicKey);
         return $encrypted;
@@ -43,7 +51,7 @@ class BoostPHP_SecureClass_RSA
 	* @access public
 	* @return string Decrypted Data
 	*/
-    public function publicDecrypt($data, $publicKey)
+    public static function publicDecrypt($data, $publicKey)
     {
         openssl_public_decrypt($data, $decrypted, $publicKey);
         return $decrypted;
@@ -56,7 +64,7 @@ class BoostPHP_SecureClass_RSA
 	* @access public
 	* @return string Encrypted Data
 	*/
-    public function privateEncrypt($data, $privateKey)
+    public static function privateEncrypt($data, $privateKey)
     {
         openssl_private_encrypt($data, $encrypted, $privateKey);
         return $encrypted;
@@ -69,7 +77,7 @@ class BoostPHP_SecureClass_RSA
 	* @access public
 	* @return string Decrypted Data
 	*/
-    public function privateDecrypt($data, $privateKey)
+    public static function privateDecrypt($data, $privateKey)
     {
         openssl_private_decrypt($data, $decrypted, $privateKey);
         return $decrypted;
