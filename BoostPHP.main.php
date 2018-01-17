@@ -121,11 +121,11 @@ class BoostPHP_NetworkClass{
 	 * @param string Your email body(Supports HTML5)
 	 * @param string Your Sender Address(Usually same with the Username)
 	 * @param string Your Sender Name(E.g. BlueAirTechGroup)
-	 * @param boolean Auto TLS Connection or NOT
+	 * @param string ssl / tls / empty for nonsecure
 	 * @access public
 	 * @return Mysql Connection
 	 */
-	public static function sendEmail($SMTPPort = 25,$SMTPHost,$SMTPUsername,$SMTPPassword,$To,$Subject,$Body,$Sender,$SenderName, $SecureConnection = false){
+	public static function sendEmail($SMTPPort = 25,$SMTPHost,$SMTPUsername,$SMTPPassword,$To,$Subject,$Body,$Sender,$SenderName, $SecureConnection = 'ssl'){
 		$MySD=new PHPMailer;
 		$MySD->IsSMTP();
 		$MySD->isHTML(true);
@@ -137,7 +137,14 @@ class BoostPHP_NetworkClass{
 		$MySD->Password = $SMTPPassword;
 		$MySD->From = $Sender;
 		$MySD->FromName = $SenderName;
-		if($SecureConnection){$MySD->SMTPAutoTLS;}
+		if(!empty($SecureConnection)){
+			if($SecureConnection == 'tls'){
+				$MySD->SMTPSecure = 'tls';
+			}else{
+				$MySD->SMTPSecure = 'ssl';
+			}
+		}
+		
 		if(strpos($To,";")!==false){
 			//如果分为好几个收件人
 			$MyRSVA=explode(";",$To);
@@ -407,7 +414,7 @@ class BoostPHP_MySQLClass{
 		$ValueState .= ")";
 		$InsertStatement .= $NameState . " VALUES " . $ValueState;
 		$InsertRST = mysqli_query($MySQLiConn,$InsertStatement);
-		return (!$InsertRST?false:true);
+		return ((!$InsertRST) ? false : true);
 	}
 	/**
 	 * Update the Table of the MYSQL DB
@@ -446,7 +453,7 @@ class BoostPHP_MySQLClass{
 			}
 		}
 		$UpdateRST = mysqli_query($MySQLiConn,$UpdateState);
-		return (!$UpdateRST?false:true);
+		return ((!$UpdateRST) ? false : true);
 	}
 	/**
 	 * Delete Rows from MYSQL DB
@@ -473,7 +480,7 @@ class BoostPHP_MySQLClass{
 			}
 		}
 		$DeleteRST = mysqli_query($MySQLiConn,$DeleteStatement);
-		return (!$DeleteRST?false:true);
+		return ((!$DeleteRST) ? false : true);
 	}
 	/**
 	 * Close a MySQL Connection
