@@ -12,6 +12,20 @@ require_once 'BoostPHP.International.php';
 require_once 'class.phpmailer.php';
 class BoostPHP_ResultClass{
 	/**
+	 * Returns the IP of the visitor
+	 * @param bool If you want to automatic detect your visitors' IP behind a CDN, might cause security issue.
+	 * @access public
+	 * @return string
+	 */
+	public static function getIP($detectCDN = true){
+		if($detectCDN){
+			return empty($_SERVER["X-Forwarded-For"]) ? $_SERVER["REMOTE_ADDR"] : $_SERVER["X-Forwarded-For"];
+		}else{
+			return $_SERVER["REMOTE_ADDR"];
+		}
+	}
+	
+	/**
 	 * Jump to a page using header writing, JavaScript and HTML tags, and ALSO Exit the PHP program right away.
 	 * @param string $URL the URL you want to jump to
 	 * @access public
