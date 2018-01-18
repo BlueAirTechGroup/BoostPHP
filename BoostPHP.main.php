@@ -434,9 +434,9 @@ class BoostPHP_MySQLClass{
 		$UpdateXH = 0;
 		foreach($UpdateArray as $BLName=>$BLValue){
 			if($UpdateXH != (count($UpdateArray) - 1)){
-				$UpdateArray .= mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn, $BLValue) . "', ";
+				$UpdateState .= mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn, $BLValue) . "', ";
 			}else{
-				$UpdateArray .= mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn, $BLValue) . "' ";
+				$UpdateState .= mysqli_real_escape_string($MySQLiConn,$BLName) . " = '" . mysqli_real_escape_string($MySQLiConn, $BLValue) . "' ";
 			}
 			$UpdateXH++;
 		}
@@ -487,7 +487,7 @@ class BoostPHP_MySQLClass{
 	 * @param MySQLi Connection Data
 	 * @return Always true
 	 */
-	public function closeConn($MySQLiConn){
+	public static function closeConn($MySQLiConn){
 		mysqli_close($MySQLiConn);
 		return true;
 	}
