@@ -19,7 +19,7 @@ class BoostPHP_ResultClass{
 	 */
 	public static function getIP($detectCDN = true){
 		if($detectCDN){
-			return empty($_SERVER["X-Forwarded-For"]) ? $_SERVER["REMOTE_ADDR"] : $_SERVER["X-Forwarded-For"];
+			return empty($_SERVER["HTTP_X_Forwarded_For"]) ? $_SERVER["REMOTE_ADDR"] : $_SERVER["HTTP_X_Forwarded_For"];
 		}else{
 			return $_SERVER["REMOTE_ADDR"];
 		}
