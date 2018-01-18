@@ -29,7 +29,7 @@ class BoostPHP_Check{
 	 
 	public static function CheckEmailAddr($C_mailaddr)    
 	{  
-		return preg_match("/^[_a-zA-Z0-9-]+(.[_a-zA-Z0-9-]+)*@[_a-zA-Z0-9-]+(.[_a-zA-Z0-9-]+)*$/", $c_mailaddr) ? true : false;
+		return preg_match("/^[_a-zA-Z0-9-]+(.[_a-zA-Z0-9-]+)*@[_a-zA-Z0-9-]+(.[_a-zA-Z0-9-]+)*$/", $C_mailaddr) ? true : false;
 	}
 	 
 	 
